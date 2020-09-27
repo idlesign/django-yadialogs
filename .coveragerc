@@ -1,0 +1,4 @@
+[run]
+include = yadialogs/*
+omit = yadialogs/migrations/*, yadialogs/tests/*
+
