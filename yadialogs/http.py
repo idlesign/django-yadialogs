@@ -1,15 +1,16 @@
-import logging
-from typing import Optional, Union
+from pathlib import Path
+from typing import Callable, Union
 
-from requests import Session, Response, RequestException
+from requests import Session
 
-LOGGER = logging.getLogger(__name__)
+from . import VERSION_STR
+from .settings import API_TIMEOUT
 
 
 class HttpClient:
-    """Client to perform HTTP requests."""
+    """Клиент для соверщения HTTP запросов."""
 
-    timeout: int = 10
+    timeout: int = API_TIMEOUT
 
     user_agent: str = ''
 
@@ -17,68 +18,21 @@ class HttpClient:
         session = Session()
         session.headers.update({
             'Authorization': f'OAuth {token}',
+            'User-Agent': f'django-yadialogs/{VERSION_STR}',
         })
         self.session = session
 
-    def request(
-            self,
-            url: str,
-            *,
-            data: dict = None,
-            json: bool = None,
-            silence_exceptions: bool = None,
-            timeout: int = None,
-            **kwargs
-    ) -> Optional[Union[Response, dict]]:
-        """
+    def _request(self, *, method: Callable, url, **kwargs) -> dict:
+        response = method(url, **{'timeout': self.timeout, **kwargs})
+        response.raise_for_status()
+        data = response.json()
+        return data
 
-        :param url: URL to address
-        :param data: Data to send to URL
-        :param json: Send and receive data as JSON
-        :param silence_exceptions: Do not raise exceptions
-        :param timeout: Override timeout.
-        :param kwargs:
+    def delete(self, url: str) -> dict:
+        return self._request(method=self.session.delete, url=url)
 
-        """
-        LOGGER.debug(f'Fetching {url} ...')
+    def upload(self, url: str, *, fpath: Union[Path, str]) -> dict:
+        return self._request(method=self.session.post, url=url, files={'file': open(f'{fpath}', 'rb')})
 
-        r_kwargs = {
-            'timeout': timeout or self.timeout,
-            **kwargs,
-        }
-
-        try:
-
-            if data or r_kwargs.get('files'):
-
-                if json:
-                    r_kwargs['json'] = data
-                else:
-                    r_kwargs['data'] = data
-
-                method = self.session.post
-
-            else:
-                method = self.session.get
-
-            response = method(url, **r_kwargs)
-
-        except RequestException as e:
-
-            LOGGER.warning(f"Failed to get response from `{url}`: {e}")
-
-            if silence_exceptions:
-                return None
-
-            raise
-
-        else:
-
-            if json:
-                try:
-                    response = response.json()
-
-                except:
-                    return {}
-
-        return response
+    def get(self, url: str) -> dict:
+        return self._request(method=self.session.get, url=url)

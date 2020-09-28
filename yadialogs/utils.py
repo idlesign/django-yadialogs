@@ -8,16 +8,20 @@ from .views import webhook
 
 
 def autodiscover_dialogs():
-    """Autodiscover and register dialogs from pluggable apps."""
+    """Автоматически обнаруживает и регистрирует диалоги, распространяемые
+    с подкленными Джанго-приложениями.
+
+    """
     import_project_modules(APP_MODULE_NAME)
 
 
 def get_yadialogs_urls() -> List:
-    """Returns yadialogs urlpatterns, that can be attached to urlpatterns of a project:
+    """Возвращает список URL-шаблонов yadialogs, который можно присовокупить
+    к urlpatterns проекта:
 
     .. code-block:: python
 
-        # Example from urls.py.
+        # Из urls.py:
 
         from yadialogs.toolbox import get_yadialogs_urls
 

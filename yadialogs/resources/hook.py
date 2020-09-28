@@ -3,10 +3,10 @@ from .base import Container
 
 class User(Container):
 
-    key = 'user'
+    _key = 'user'
 
     def __init__(self, raw: dict):
-        super().__init__(raw)
+        super().__init__(raw=raw)
 
         self.id = raw['user_id']
         """Идентификатор пользователя Яндекса, единый для всех приложений и устройств.
@@ -24,10 +24,10 @@ class User(Container):
 
 class Application(Container):
 
-    key = 'application'
+    _key = 'application'
 
     def __init__(self, raw: dict):
-        super().__init__(raw)
+        super().__init__(raw=raw)
 
         self.id = raw['application_id']
         """Идентификатор экземпляра приложения, в котором пользователь
@@ -43,10 +43,10 @@ class Application(Container):
 class Session(Container):
     """Сессия — это период относительно непрерывного взаимодействия пользователя с навыком."""
 
-    key = 'session'
+    _key = 'session'
 
     def __init__(self, raw):
-        super().__init__(raw)
+        super().__init__(raw=raw)
 
         self.id = raw['session_id']
         """Уникальный идентификатор сессии, максимум 64 символов."""
@@ -82,10 +82,10 @@ class Session(Container):
 class Meta(Container):
     """Информация об устройстве, с помощью которого пользователь разговаривает с Алисой."""
 
-    key = 'meta'
+    _key = 'meta'
 
     def __init__(self, raw: dict):
-        super().__init__(raw)
+        super().__init__(raw=raw)
         self.locale = raw['locale']
         self.timezone = raw['timezone']
 
@@ -93,13 +93,13 @@ class Meta(Container):
 class Request(Container):
     """Данные, полученные от пользователя."""
 
-    key = 'request'
+    _key = 'request'
 
 
 class Callback(Container):
 
     def __init__(self, raw):
-        super().__init__(raw)
+        super().__init__(raw=raw)
 
         self.meta = Meta.from_raw(raw)
         """Информация об устройстве, с помощью которого пользователь разговаривает с Алисой."""

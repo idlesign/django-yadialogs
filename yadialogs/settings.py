@@ -9,7 +9,10 @@ except ImportError:
 
 
 APP_MODULE_NAME = getattr(settings, 'YADIALOGS_APP_MODULE_NAME', 'dialogs')
-"""Module name to search applications for dialogs in."""
+"""Имя модуля, расположанного в приложениях, в которых треубется искать диалоги."""
 
 API_KEY = getattr(settings, 'YADIALOG_API_KEY', environ.get('YADIALOG_API_KEY', ''))
-"""OAuth key to access dialogs API."""
+"""Ключ OAuth для доступа к HTTP API Диалогов."""
+
+API_TIMEOUT = getattr(settings, 'YADIALOG_API_TIMEOUT', environ.get('YADIALOG_API_TIMEOUT', 5))
+"""Таймаут для взаимодествия с HTTP API Диалогов."""

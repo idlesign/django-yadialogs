@@ -1,14 +1,13 @@
 from django.apps import AppConfig
-from django.utils.translation import gettext_lazy as _
 
 
 class YadialogsConfig(AppConfig):
-    """Application configuration."""
+    """Конфигурация приложения."""
 
     name = 'yadialogs'
-    verbose_name = _('Yandex Dialogs')
+    verbose_name = 'Яндекс.Диалоги'
 
     def ready(self):
-        """Application initialization."""
+        """Инициализирует приложение."""
         from .toolbox import autodiscover_dialogs
         autodiscover_dialogs()

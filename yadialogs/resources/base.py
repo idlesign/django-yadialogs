@@ -1,16 +1,16 @@
 
 class Container:
 
-    key: str = ''
+    _key: str = ''
 
-    def __init__(self, raw: dict):
-        self.raw = raw
+    def __init__(self, *, raw: dict):
+        self._raw = raw
 
     @classmethod
     def from_raw(cls, raw: dict):
-        data = raw.get(cls.key)
+        data = raw.get(cls._key)
 
         if data is None:
             return None
 
-        return cls(data)
+        return cls(raw=data)

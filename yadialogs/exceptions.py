@@ -1,3 +1,3 @@
 
 class YaDialogsException(Exception):
-    """Base yadialogs exception."""
+    """База для исключений yadialogs."""
