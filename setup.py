@@ -51,6 +51,7 @@ setup(
     tests_require=[
         'pytest',
         'pytest-djangoapp>=0.15.0',
+        'pytest-datafixtures',
         'pytest-responsemock',
     ],
 
